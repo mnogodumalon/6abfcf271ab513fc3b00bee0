@@ -1,0 +1,55 @@
+{
+  "entities": {
+    "Tische": {
+      "placeholders_set": 5,
+      "defaults_keys": [],
+      "computed_keys": [],
+      "reason": "Reine Stammdaten eines Tisches ohne Datumspaar, Preis oder numerische Verknüpfung, daher keine Formel und kein sinnvoller Standardwert."
+    },
+    "Gäste und Einladungen": {
+      "placeholders_set": 13,
+      "defaults_keys": [
+        "einladungsstatus",
+        "anzahl_personen",
+        "einladungsdatum"
+      ],
+      "computed_keys": [],
+      "reason": "Keine Formel, da kein Datumspaar mit Dauer und kein Preis über applookup erreichbar ist; Tischnummer und Plätze sind keine Beträge für Gäste."
+    },
+    "Dienstleister": {
+      "placeholders_set": 7,
+      "defaults_keys": [
+        "status"
+      ],
+      "computed_keys": [],
+      "reason": "Reine Stammdaten ohne numerische Felder, daher keine Formeln; der Status startet mit Anfrage."
+    },
+    "Aufgaben": {
+      "placeholders_set": 7,
+      "defaults_keys": [
+        "status",
+        "faelligkeitsdatum"
+      ],
+      "computed_keys": [],
+      "reason": "Keine Formeln, da die Aufgaben keine numerischen Felder oder Datumspaare enthalten."
+    },
+    "Budget": {
+      "placeholders_set": 6,
+      "defaults_keys": [
+        "zahlungsstatus"
+      ],
+      "computed_keys": [
+        "_budget_differenz"
+      ],
+      "reason": "Virtuelle Differenz aus geplantem und tatsächlichem Betrag zeigt Über- oder Unterschreitung im Budget; Status startet mit Offen."
+    },
+    "Fotogalerie": {
+      "placeholders_set": 4,
+      "defaults_keys": [
+        "aufnahmedatum"
+      ],
+      "computed_keys": [],
+      "reason": "Reine Stammdaten einer Fotogalerie ohne numerische Kette, daher keine Formeln; das Aufnahmedatum startet mit heute."
+    }
+  }
+}

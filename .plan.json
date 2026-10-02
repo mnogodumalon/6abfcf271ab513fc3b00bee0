@@ -1,0 +1,314 @@
+{
+  "version": 1,
+  "language": "de",
+  "understanding": {
+    "summary": "Die Anwendung hilft dem Brautpaar, die Hochzeit zu organisieren: Gäste und Einladungen verwalten, Tische und Sitzordnung planen, Dienstleister im Blick behalten, Aufgaben abarbeiten, das Budget kontrollieren und Fotos sammeln.",
+    "roles": [
+      "Brautpaar",
+      "Trauzeugen und Helfer"
+    ],
+    "main_tasks": [
+      "Gäste einladen und Rückmeldungen erfassen",
+      "Gäste an Tische setzen",
+      "Dienstleister anfragen und buchen",
+      "Aufgaben mit Fälligkeit verfolgen",
+      "Kosten und Zahlungen im Budget überwachen",
+      "Hochzeitsfotos in der Galerie sammeln"
+    ],
+    "platform_roles": [
+      {
+        "persona": "Brautpaar",
+        "role": "administrator",
+        "apps": [
+          "tische",
+          "gaeste_und_einladungen",
+          "dienstleister",
+          "aufgaben",
+          "budget",
+          "fotogalerie"
+        ]
+      },
+      {
+        "persona": "Trauzeugen und Helfer",
+        "role": "standard",
+        "apps": [
+          "aufgaben",
+          "gaeste_und_einladungen",
+          "fotogalerie"
+        ]
+      }
+    ]
+  },
+  "flows": [
+    {
+      "slug": "gast-einladen",
+      "label": {
+        "de": "Gast einladen",
+        "en": "Invite guest"
+      },
+      "description": "Einen Gast mit Kontaktdaten erfassen und die Einladung als versendet markieren.",
+      "priority": "must",
+      "writes": [
+        {
+          "entity": "gaeste_und_einladungen",
+          "op": "create",
+          "when": "always",
+          "fields": {
+            "gast_firstname": "user",
+            "gast_lastname": "user",
+            "email": "user",
+            "telefon": "user",
+            "strasse": "user",
+            "hausnummer": "user",
+            "plz": "user",
+            "ort": "user",
+            "seite": "user",
+            "anzahl_personen": "user",
+            "menuewunsch": "user",
+            "allergien": "user",
+            "einladungsstatus": "fixed:eingeladen"
+          },
+          "needs": {}
+        }
+      ],
+      "required": [],
+      "brief": "# Flow `gast-einladen` — Gast einladen\nEinen Gast mit Kontaktdaten erfassen und die Einladung als versendet markieren.\n\n## Your hook — import it, never rebuild what it owns\n`import { useGastEinladenFlow } from '@/lib/journey/flows/GastEinladen';` — generated from the Schreibliste below. It OWNS the form(s), one record search per picked field (columns and filter from the plan) and the submit plan with every fixed and derived value. You compose: `flow.forms.<entity>` for <Bound>/<Field>, `{...flow.picks.<field>.select} {...flow.pick('<field>')}` (or `flow.pickMany` for a multi pick) for <EntitySelectStep>, `flow.validateStep(n)` in StepNav.onNext, `flow.submit` + `flow.formList` for SummaryStep/SuccessStep, `flow.reset()`. Options: `steps` (field → step), `items` (how a hit reads, per pick), `initial`, `messages`. The hook's docblock in .lane-context.md shows the exact call. Never import servicePort, useStepForm, useJourneySubmit, useRecordSearch or useDashboardData in this page — check-intents refuses a page that uses the hook and any of them.\n\n## Steps (in this order)\n1. Name und Kontaktdaten des Gastes eingeben\n2. Seite, Anzahl Personen, Menüwunsch und Allergien erfassen\n3. Einladung wird mit Datum als eingeladen gespeichert\n\n## Schreibliste — the ONLY writes this flow makes (the gate compares your plan steps with this list)\n- creates `gaeste_und_einladungen`:\n    - `gast_firstname`: the user enters it (bind it through the layer: form.field/…)\n    - `gast_lastname`: the user enters it (bind it through the layer: form.field/…)\n    - `email`: the user enters it (bind it through the layer: form.field/…)\n    - `telefon`: the user enters it (bind it through the layer: form.field/…)\n    - `strasse`: the user enters it (bind it through the layer: form.field/…)\n    - `hausnummer`: the user enters it (bind it through the layer: form.field/…)\n    - `plz`: the user enters it (bind it through the layer: form.field/…)\n    - `ort`: the user enters it (bind it through the layer: form.field/…)\n    - `seite`: the user enters it (bind it through the layer: form.field/…)\n    - `anzahl_personen`: the user enters it (bind it through the layer: form.field/…)\n    - `menuewunsch`: the user enters it (bind it through the layer: form.field/…)\n    - `allergien`: the user enters it (bind it through the layer: form.field/…)\n    - `einladungsstatus`: fixed value `eingeladen` — set it in the plan step's values, never ask\n\n## Success page\n- shows: `gaeste_und_einladungen.gast_lastname`, `gaeste_und_einladungen.einladungsstatus`\n- next flows to offer: `rueckmeldung-erfassen`, `gast-an-tisch-setzen`\n\n## Never write these — another flow or a tool owns them\n- `gaeste_und_einladungen.rueckmeldedatum` (owner: intent `rueckmeldung-erfassen`)\n- `gaeste_und_einladungen.tisch` (owner: intent `gast-an-tisch-setzen`)\n- `dienstleister.status` (owner: intent `dienstleister-buchen`)\n- `budget.bezeichnung` (owner: intent `dienstleister-buchen`)\n- `budget.kategorie` (owner: intent `dienstleister-buchen`)\n- `budget.geplanter_betrag` (owner: intent `dienstleister-buchen`)\n- `budget.zahlungsstatus` (owner: intent `dienstleister-buchen`)\n- `budget.dienstleister` (owner: intent `dienstleister-buchen`)\n- `aufgaben.titel` (owner: intent `dienstleister-buchen`)\n- `aufgaben.faelligkeitsdatum` (owner: intent `dienstleister-buchen`)\n- `aufgaben.prioritaet` (owner: intent `dienstleister-buchen`)\n- `aufgaben.status` (owner: intent `dienstleister-buchen`)\n- `aufgaben.dienstleister` (owner: intent `dienstleister-buchen`)\n- `budget.tatsaechlicher_betrag` (owner: intent `zahlung-erfassen`)\n- `budget.zahlungsdatum` (owner: intent `zahlung-erfassen`)\n- `gaeste_und_einladungen.einladungsdatum` (owner: tool `einladungsdatum-setzen`)\n"
+    },
+    {
+      "slug": "rueckmeldung-erfassen",
+      "label": {
+        "de": "Rückmeldung erfassen",
+        "en": "Record RSVP"
+      },
+      "description": "Zu- oder Absage eines eingeladenen Gastes eintragen.",
+      "priority": "must",
+      "writes": [
+        {
+          "entity": "gaeste_und_einladungen",
+          "op": "update",
+          "when": "always",
+          "fields": {
+            "einladungsstatus": "user",
+            "rueckmeldedatum": "derived:today",
+            "anzahl_personen": "user",
+            "menuewunsch": "user",
+            "allergien": "user"
+          },
+          "needs": {}
+        }
+      ],
+      "required": [],
+      "brief": "# Flow `rueckmeldung-erfassen` — Rückmeldung erfassen\nZu- oder Absage eines eingeladenen Gastes eintragen.\n\n## Your hook — import it, never rebuild what it owns\n`import { useRueckmeldungErfassenFlow } from '@/lib/journey/flows/RueckmeldungErfassen';` — generated from the Schreibliste below. It OWNS the form(s), one record search per picked field (columns and filter from the plan) and the submit plan with every fixed and derived value. You compose: `flow.forms.<entity>` for <Bound>/<Field>, `{...flow.picks.<field>.select} {...flow.pick('<field>')}` (or `flow.pickMany` for a multi pick) for <EntitySelectStep>, `flow.validateStep(n)` in StepNav.onNext, `flow.submit` + `flow.formList` for SummaryStep/SuccessStep, `flow.reset()`. Options: `steps` (field → step), `items` (how a hit reads, per pick), `initial`, `messages`. The hook's docblock in .lane-context.md shows the exact call. This flow CHANGES a record of `gaeste_und_einladungen`: `{...flow.picks.gaeste_und_einladungen.select} {...flow.pick('gaeste_und_einladungen')}` picks it, the hook prefills the form with its current values and updates THAT record — never a create step, never a list from useDashboardData. Never import servicePort, useStepForm, useJourneySubmit, useRecordSearch or useDashboardData in this page — check-intents refuses a page that uses the hook and any of them.\n\n## Steps (in this order)\n1. Eingeladenen Gast auswählen\n2. Zusage oder Absage wählen\n3. Anzahl Personen und Menüwunsch ergänzen\n\n## Schreibliste — the ONLY writes this flow makes (the gate compares your plan steps with this list)\n- updates `gaeste_und_einladungen`:\n    - `einladungsstatus`: the user enters it (bind it through the layer: form.field/…)\n    - `rueckmeldedatum`: derived: today() — set it in the plan step, never ask\n    - `anzahl_personen`: the user enters it (bind it through the layer: form.field/…)\n    - `menuewunsch`: the user enters it (bind it through the layer: form.field/…)\n    - `allergien`: the user enters it (bind it through the layer: form.field/…)\n\n## Reads\n- `gaeste_und_einladungen` columns gast_firstname, gast_lastname, einladungsstatus\n\n## Success page\n- shows: `gaeste_und_einladungen.einladungsstatus`, `gaeste_und_einladungen.rueckmeldedatum`\n- next flows to offer: `gast-an-tisch-setzen`\n\n## Never write these — another flow or a tool owns them\n- `gaeste_und_einladungen.gast_firstname` (owner: intent `gast-einladen`)\n- `gaeste_und_einladungen.gast_lastname` (owner: intent `gast-einladen`)\n- `gaeste_und_einladungen.email` (owner: intent `gast-einladen`)\n- `gaeste_und_einladungen.telefon` (owner: intent `gast-einladen`)\n- `gaeste_und_einladungen.strasse` (owner: intent `gast-einladen`)\n- `gaeste_und_einladungen.hausnummer` (owner: intent `gast-einladen`)\n- `gaeste_und_einladungen.plz` (owner: intent `gast-einladen`)\n- `gaeste_und_einladungen.ort` (owner: intent `gast-einladen`)\n- `gaeste_und_einladungen.seite` (owner: intent `gast-einladen`)\n- `gaeste_und_einladungen.tisch` (owner: intent `gast-an-tisch-setzen`)\n- `dienstleister.status` (owner: intent `dienstleister-buchen`)\n- `budget.bezeichnung` (owner: intent `dienstleister-buchen`)\n- `budget.kategorie` (owner: intent `dienstleister-buchen`)\n- `budget.geplanter_betrag` (owner: intent `dienstleister-buchen`)\n- `budget.zahlungsstatus` (owner: intent `dienstleister-buchen`)\n- `budget.dienstleister` (owner: intent `dienstleister-buchen`)\n- `aufgaben.titel` (owner: intent `dienstleister-buchen`)\n- `aufgaben.faelligkeitsdatum` (owner: intent `dienstleister-buchen`)\n- `aufgaben.prioritaet` (owner: intent `dienstleister-buchen`)\n- `aufgaben.status` (owner: intent `dienstleister-buchen`)\n- `aufgaben.dienstleister` (owner: intent `dienstleister-buchen`)\n- `budget.tatsaechlicher_betrag` (owner: intent `zahlung-erfassen`)\n- `budget.zahlungsdatum` (owner: intent `zahlung-erfassen`)\n- `gaeste_und_einladungen.einladungsdatum` (owner: tool `einladungsdatum-setzen`)\n"
+    },
+    {
+      "slug": "gast-an-tisch-setzen",
+      "label": {
+        "de": "Gast an Tisch setzen",
+        "en": "Seat guest at table"
+      },
+      "description": "Einen zugesagten Gast einem Tisch zuweisen, sofern noch Plätze frei sind.",
+      "priority": "must",
+      "writes": [
+        {
+          "entity": "gaeste_und_einladungen",
+          "op": "update",
+          "when": "always",
+          "fields": {
+            "tisch": "picked"
+          },
+          "needs": {}
+        }
+      ],
+      "required": [],
+      "brief": "# Flow `gast-an-tisch-setzen` — Gast an Tisch setzen\nEinen zugesagten Gast einem Tisch zuweisen, sofern noch Plätze frei sind.\n\n## Your hook — import it, never rebuild what it owns\n`import { useGastAnTischSetzenFlow } from '@/lib/journey/flows/GastAnTischSetzen';` — generated from the Schreibliste below. It OWNS the form(s), one record search per picked field (columns and filter from the plan) and the submit plan with every fixed and derived value. You compose: `flow.forms.<entity>` for <Bound>/<Field>, `{...flow.picks.<field>.select} {...flow.pick('<field>')}` (or `flow.pickMany` for a multi pick) for <EntitySelectStep>, `flow.validateStep(n)` in StepNav.onNext, `flow.submit` + `flow.formList` for SummaryStep/SuccessStep, `flow.reset()`. Options: `steps` (field → step), `items` (how a hit reads, per pick: tisch), `initial`, `messages`. The hook's docblock in .lane-context.md shows the exact call. This flow CHANGES a record of `gaeste_und_einladungen`: `{...flow.picks.gaeste_und_einladungen.select} {...flow.pick('gaeste_und_einladungen')}` picks it, the hook prefills the form with its current values and updates THAT record — never a create step, never a list from useDashboardData. Never import servicePort, useStepForm, useJourneySubmit, useRecordSearch or useDashboardData in this page — check-intents refuses a page that uses the hook and any of them.\n\n## Steps (in this order)\n1. Zugesagten Gast ohne Tisch auswählen\n2. Tisch mit freien Plätzen auswählen\n3. Zuweisung speichern\n\n## Schreibliste — the ONLY writes this flow makes (the gate compares your plan steps with this list)\n- updates `gaeste_und_einladungen`:\n    - `tisch`: from the record the user picks in this flow\n\n## Reads\n- `gaeste_und_einladungen` columns gast_firstname, gast_lastname, anzahl_personen, tisch\n- `tische` columns tischname, tischnummer, anzahl_plaetze, standort\n\n## Checks BEFORE the write (block the submit with the message when they fail)\n- stock_sufficient (stock=`tische.anzahl_plaetze`, quantity=`gaeste_und_einladungen.anzahl_personen`) — message: „Am gewählten Tisch sind nicht genug Plätze frei.“\n\n## Success page\n- shows: `gaeste_und_einladungen.tisch`\n\n## Never write these — another flow or a tool owns them\n- `gaeste_und_einladungen.gast_firstname` (owner: intent `gast-einladen`)\n- `gaeste_und_einladungen.gast_lastname` (owner: intent `gast-einladen`)\n- `gaeste_und_einladungen.email` (owner: intent `gast-einladen`)\n- `gaeste_und_einladungen.telefon` (owner: intent `gast-einladen`)\n- `gaeste_und_einladungen.strasse` (owner: intent `gast-einladen`)\n- `gaeste_und_einladungen.hausnummer` (owner: intent `gast-einladen`)\n- `gaeste_und_einladungen.plz` (owner: intent `gast-einladen`)\n- `gaeste_und_einladungen.ort` (owner: intent `gast-einladen`)\n- `gaeste_und_einladungen.seite` (owner: intent `gast-einladen`)\n- `gaeste_und_einladungen.anzahl_personen` (owner: intent `gast-einladen`)\n- `gaeste_und_einladungen.menuewunsch` (owner: intent `gast-einladen`)\n- `gaeste_und_einladungen.allergien` (owner: intent `gast-einladen`)\n- `gaeste_und_einladungen.einladungsstatus` (owner: intent `gast-einladen`)\n- `gaeste_und_einladungen.rueckmeldedatum` (owner: intent `rueckmeldung-erfassen`)\n- `dienstleister.status` (owner: intent `dienstleister-buchen`)\n- `budget.bezeichnung` (owner: intent `dienstleister-buchen`)\n- `budget.kategorie` (owner: intent `dienstleister-buchen`)\n- `budget.geplanter_betrag` (owner: intent `dienstleister-buchen`)\n- `budget.zahlungsstatus` (owner: intent `dienstleister-buchen`)\n- `budget.dienstleister` (owner: intent `dienstleister-buchen`)\n- `aufgaben.titel` (owner: intent `dienstleister-buchen`)\n- `aufgaben.faelligkeitsdatum` (owner: intent `dienstleister-buchen`)\n- `aufgaben.prioritaet` (owner: intent `dienstleister-buchen`)\n- `aufgaben.status` (owner: intent `dienstleister-buchen`)\n- `aufgaben.dienstleister` (owner: intent `dienstleister-buchen`)\n- `budget.tatsaechlicher_betrag` (owner: intent `zahlung-erfassen`)\n- `budget.zahlungsdatum` (owner: intent `zahlung-erfassen`)\n- `gaeste_und_einladungen.einladungsdatum` (owner: tool `einladungsdatum-setzen`)\n"
+    },
+    {
+      "slug": "dienstleister-buchen",
+      "label": {
+        "de": "Dienstleister buchen",
+        "en": "Book vendor"
+      },
+      "description": "Dienstleister ausw\\u00e4hlen, als gebucht markieren und Budgetposten sowie Aufgabe dazu anlegen.",
+      "priority": "must",
+      "writes": [
+        {
+          "entity": "dienstleister",
+          "op": "update",
+          "when": "always",
+          "fields": {
+            "status": "fixed:gebucht"
+          },
+          "needs": {}
+        },
+        {
+          "entity": "budget",
+          "op": "create",
+          "when": "always",
+          "fields": {
+            "bezeichnung": "user",
+            "kategorie": "user",
+            "geplanter_betrag": "user",
+            "zahlungsstatus": "fixed:offen",
+            "dienstleister": "picked"
+          },
+          "needs": {}
+        },
+        {
+          "entity": "aufgaben",
+          "op": "create",
+          "when": "optional",
+          "fields": {
+            "titel": "user",
+            "faelligkeitsdatum": "user",
+            "prioritaet": "user",
+            "status": "fixed:offen",
+            "dienstleister": "picked"
+          },
+          "needs": {}
+        }
+      ],
+      "required": [],
+      "brief": "# Flow `dienstleister-buchen` — Dienstleister buchen\nDienstleister ausw\\u00e4hlen, als gebucht markieren und Budgetposten sowie Aufgabe dazu anlegen.\n\n## Your hook — import it, never rebuild what it owns\n`import { useDienstleisterBuchenFlow } from '@/lib/journey/flows/DienstleisterBuchen';` — generated from the Schreibliste below. It OWNS the form(s), one record search per picked field (columns and filter from the plan) and the submit plan with every fixed and derived value. You compose: `flow.forms.<entity>` for <Bound>/<Field>, `{...flow.picks.<field>.select} {...flow.pick('<field>')}` (or `flow.pickMany` for a multi pick) for <EntitySelectStep>, `flow.validateStep(n)` in StepNav.onNext, `flow.submit` + `flow.formList` for SummaryStep/SuccessStep, `flow.reset()`. Options: `steps` (field → step), `items` (how a hit reads, per pick: dienstleister, dienstleister), `initial`, `messages`. The hook's docblock in .lane-context.md shows the exact call. This flow CHANGES a record of `dienstleister`: `{...flow.picks.dienstleister.select} {...flow.pick('dienstleister')}` picks it, the hook prefills the form with its current values and updates THAT record — never a create step, never a list from useDashboardData. Never import servicePort, useStepForm, useJourneySubmit, useRecordSearch or useDashboardData in this page — check-intents refuses a page that uses the hook and any of them.\n\n## Steps (in this order)\n1. Dienstleister auswählen\n2. Status auf gebucht setzen\n3. Budgetposten mit geplantem Betrag anlegen\n4. Optional Folgeaufgabe anlegen\n\n## Schreibliste — the ONLY writes this flow makes (the gate compares your plan steps with this list)\n- updates `dienstleister`:\n    - `status`: fixed value `gebucht` — set it in the plan step's values, never ask\n- creates `budget`:\n    - `bezeichnung`: the user enters it (bind it through the layer: form.field/…)\n    - `kategorie`: the user enters it (bind it through the layer: form.field/…)\n    - `geplanter_betrag`: the user enters it (bind it through the layer: form.field/…)\n    - `zahlungsstatus`: fixed value `offen` — set it in the plan step's values, never ask\n    - `dienstleister`: from the record the user picks in this flow\n- creates `aufgaben` (only when the flow needs it):\n    - `titel`: the user enters it (bind it through the layer: form.field/…)\n    - `faelligkeitsdatum`: the user enters it (bind it through the layer: form.field/…)\n    - `prioritaet`: the user enters it (bind it through the layer: form.field/…)\n    - `status`: fixed value `offen` — set it in the plan step's values, never ask\n    - `dienstleister`: from the record the user picks in this flow\n\n## Reads\n- `dienstleister` columns firmenname, kategorie, status\n\n## Success page\n- shows: `dienstleister.status`, `budget.geplanter_betrag`\n\n## Never write these — another flow or a tool owns them\n- `gaeste_und_einladungen.gast_firstname` (owner: intent `gast-einladen`)\n- `gaeste_und_einladungen.gast_lastname` (owner: intent `gast-einladen`)\n- `gaeste_und_einladungen.email` (owner: intent `gast-einladen`)\n- `gaeste_und_einladungen.telefon` (owner: intent `gast-einladen`)\n- `gaeste_und_einladungen.strasse` (owner: intent `gast-einladen`)\n- `gaeste_und_einladungen.hausnummer` (owner: intent `gast-einladen`)\n- `gaeste_und_einladungen.plz` (owner: intent `gast-einladen`)\n- `gaeste_und_einladungen.ort` (owner: intent `gast-einladen`)\n- `gaeste_und_einladungen.seite` (owner: intent `gast-einladen`)\n- `gaeste_und_einladungen.anzahl_personen` (owner: intent `gast-einladen`)\n- `gaeste_und_einladungen.menuewunsch` (owner: intent `gast-einladen`)\n- `gaeste_und_einladungen.allergien` (owner: intent `gast-einladen`)\n- `gaeste_und_einladungen.einladungsstatus` (owner: intent `gast-einladen`)\n- `gaeste_und_einladungen.rueckmeldedatum` (owner: intent `rueckmeldung-erfassen`)\n- `gaeste_und_einladungen.tisch` (owner: intent `gast-an-tisch-setzen`)\n- `budget.tatsaechlicher_betrag` (owner: intent `zahlung-erfassen`)\n- `budget.zahlungsdatum` (owner: intent `zahlung-erfassen`)\n- `gaeste_und_einladungen.einladungsdatum` (owner: tool `einladungsdatum-setzen`)\n"
+    },
+    {
+      "slug": "zahlung-erfassen",
+      "label": {
+        "de": "Zahlung erfassen",
+        "en": "Record payment"
+      },
+      "description": "Eine Zahlung zu einem Budgetposten mit tatsächlichem Betrag und Status eintragen.",
+      "priority": "must",
+      "writes": [
+        {
+          "entity": "budget",
+          "op": "update",
+          "when": "always",
+          "fields": {
+            "tatsaechlicher_betrag": "user",
+            "zahlungsstatus": "user",
+            "zahlungsdatum": "derived:today"
+          },
+          "needs": {}
+        }
+      ],
+      "required": [],
+      "brief": "# Flow `zahlung-erfassen` — Zahlung erfassen\nEine Zahlung zu einem Budgetposten mit tatsächlichem Betrag und Status eintragen.\n\n## Your hook — import it, never rebuild what it owns\n`import { useZahlungErfassenFlow } from '@/lib/journey/flows/ZahlungErfassen';` — generated from the Schreibliste below. It OWNS the form(s), one record search per picked field (columns and filter from the plan) and the submit plan with every fixed and derived value. You compose: `flow.forms.<entity>` for <Bound>/<Field>, `{...flow.picks.<field>.select} {...flow.pick('<field>')}` (or `flow.pickMany` for a multi pick) for <EntitySelectStep>, `flow.validateStep(n)` in StepNav.onNext, `flow.submit` + `flow.formList` for SummaryStep/SuccessStep, `flow.reset()`. Options: `steps` (field → step), `items` (how a hit reads, per pick), `initial`, `messages`. The hook's docblock in .lane-context.md shows the exact call. This flow CHANGES a record of `budget`: `{...flow.picks.budget.select} {...flow.pick('budget')}` picks it, the hook prefills the form with its current values and updates THAT record — never a create step, never a list from useDashboardData. Never import servicePort, useStepForm, useJourneySubmit, useRecordSearch or useDashboardData in this page — check-intents refuses a page that uses the hook and any of them.\n\n## Steps (in this order)\n1. Offenen Budgetposten auswählen\n2. Tatsächlichen Betrag und Zahlungsstatus eingeben\n3. Zahlungsdatum speichern\n\n## Schreibliste — the ONLY writes this flow makes (the gate compares your plan steps with this list)\n- updates `budget`:\n    - `tatsaechlicher_betrag`: the user enters it (bind it through the layer: form.field/…)\n    - `zahlungsstatus`: the user enters it (bind it through the layer: form.field/…)\n    - `zahlungsdatum`: derived: today() — set it in the plan step, never ask\n\n## Reads\n- `budget` columns bezeichnung, geplanter_betrag, tatsaechlicher_betrag, zahlungsstatus\n\n## Success page\n- shows: `budget.zahlungsstatus`, `budget.tatsaechlicher_betrag`\n\n## Never write these — another flow or a tool owns them\n- `gaeste_und_einladungen.gast_firstname` (owner: intent `gast-einladen`)\n- `gaeste_und_einladungen.gast_lastname` (owner: intent `gast-einladen`)\n- `gaeste_und_einladungen.email` (owner: intent `gast-einladen`)\n- `gaeste_und_einladungen.telefon` (owner: intent `gast-einladen`)\n- `gaeste_und_einladungen.strasse` (owner: intent `gast-einladen`)\n- `gaeste_und_einladungen.hausnummer` (owner: intent `gast-einladen`)\n- `gaeste_und_einladungen.plz` (owner: intent `gast-einladen`)\n- `gaeste_und_einladungen.ort` (owner: intent `gast-einladen`)\n- `gaeste_und_einladungen.seite` (owner: intent `gast-einladen`)\n- `gaeste_und_einladungen.anzahl_personen` (owner: intent `gast-einladen`)\n- `gaeste_und_einladungen.menuewunsch` (owner: intent `gast-einladen`)\n- `gaeste_und_einladungen.allergien` (owner: intent `gast-einladen`)\n- `gaeste_und_einladungen.einladungsstatus` (owner: intent `gast-einladen`)\n- `gaeste_und_einladungen.rueckmeldedatum` (owner: intent `rueckmeldung-erfassen`)\n- `gaeste_und_einladungen.tisch` (owner: intent `gast-an-tisch-setzen`)\n- `dienstleister.status` (owner: intent `dienstleister-buchen`)\n- `budget.bezeichnung` (owner: intent `dienstleister-buchen`)\n- `budget.kategorie` (owner: intent `dienstleister-buchen`)\n- `budget.geplanter_betrag` (owner: intent `dienstleister-buchen`)\n- `budget.dienstleister` (owner: intent `dienstleister-buchen`)\n- `aufgaben.titel` (owner: intent `dienstleister-buchen`)\n- `aufgaben.faelligkeitsdatum` (owner: intent `dienstleister-buchen`)\n- `aufgaben.prioritaet` (owner: intent `dienstleister-buchen`)\n- `aufgaben.status` (owner: intent `dienstleister-buchen`)\n- `aufgaben.dienstleister` (owner: intent `dienstleister-buchen`)\n- `gaeste_und_einladungen.einladungsdatum` (owner: tool `einladungsdatum-setzen`)\n"
+    },
+    {
+      "slug": "aufgabe-abschliessen",
+      "label": {
+        "de": "Aufgabe abschließen",
+        "en": "Complete task"
+      },
+      "description": "Offene Aufgabe als erledigt markieren.",
+      "priority": "nice",
+      "writes": [
+        {
+          "entity": "aufgaben",
+          "op": "update",
+          "when": "always",
+          "fields": {
+            "status": "fixed:erledigt"
+          },
+          "needs": {}
+        }
+      ],
+      "required": [],
+      "brief": "# Flow `aufgabe-abschliessen` — Aufgabe abschließen\nOffene Aufgabe als erledigt markieren.\n\n## Your hook — import it, never rebuild what it owns\n`import { useAufgabeAbschliessenFlow } from '@/lib/journey/flows/AufgabeAbschliessen';` — generated from the Schreibliste below. It OWNS the form(s), one record search per picked field (columns and filter from the plan) and the submit plan with every fixed and derived value. You compose: `flow.forms.<entity>` for <Bound>/<Field>, `{...flow.picks.<field>.select} {...flow.pick('<field>')}` (or `flow.pickMany` for a multi pick) for <EntitySelectStep>, `flow.validateStep(n)` in StepNav.onNext, `flow.submit` + `flow.formList` for SummaryStep/SuccessStep, `flow.reset()`. Options: `steps` (field → step), `items` (how a hit reads, per pick), `initial`, `messages`. The hook's docblock in .lane-context.md shows the exact call. This flow CHANGES a record of `aufgaben`: `{...flow.picks.aufgaben.select} {...flow.pick('aufgaben')}` picks it, the hook prefills the form with its current values and updates THAT record — never a create step, never a list from useDashboardData. Never import servicePort, useStepForm, useJourneySubmit, useRecordSearch or useDashboardData in this page — check-intents refuses a page that uses the hook and any of them.\n\n## Steps (in this order)\n1. Offene Aufgabe auswählen\n2. Status auf erledigt setzen\n\n## Schreibliste — the ONLY writes this flow makes (the gate compares your plan steps with this list)\n- updates `aufgaben`:\n    - `status`: fixed value `erledigt` — set it in the plan step's values, never ask\n\n## Reads\n- `aufgaben` columns titel, faelligkeitsdatum, prioritaet, status\n\n## Success page\n- shows: `aufgaben.status`\n\n## Never write these — another flow or a tool owns them\n- `gaeste_und_einladungen.gast_firstname` (owner: intent `gast-einladen`)\n- `gaeste_und_einladungen.gast_lastname` (owner: intent `gast-einladen`)\n- `gaeste_und_einladungen.email` (owner: intent `gast-einladen`)\n- `gaeste_und_einladungen.telefon` (owner: intent `gast-einladen`)\n- `gaeste_und_einladungen.strasse` (owner: intent `gast-einladen`)\n- `gaeste_und_einladungen.hausnummer` (owner: intent `gast-einladen`)\n- `gaeste_und_einladungen.plz` (owner: intent `gast-einladen`)\n- `gaeste_und_einladungen.ort` (owner: intent `gast-einladen`)\n- `gaeste_und_einladungen.seite` (owner: intent `gast-einladen`)\n- `gaeste_und_einladungen.anzahl_personen` (owner: intent `gast-einladen`)\n- `gaeste_und_einladungen.menuewunsch` (owner: intent `gast-einladen`)\n- `gaeste_und_einladungen.allergien` (owner: intent `gast-einladen`)\n- `gaeste_und_einladungen.einladungsstatus` (owner: intent `gast-einladen`)\n- `gaeste_und_einladungen.rueckmeldedatum` (owner: intent `rueckmeldung-erfassen`)\n- `gaeste_und_einladungen.tisch` (owner: intent `gast-an-tisch-setzen`)\n- `dienstleister.status` (owner: intent `dienstleister-buchen`)\n- `budget.bezeichnung` (owner: intent `dienstleister-buchen`)\n- `budget.kategorie` (owner: intent `dienstleister-buchen`)\n- `budget.geplanter_betrag` (owner: intent `dienstleister-buchen`)\n- `budget.zahlungsstatus` (owner: intent `dienstleister-buchen`)\n- `budget.dienstleister` (owner: intent `dienstleister-buchen`)\n- `aufgaben.titel` (owner: intent `dienstleister-buchen`)\n- `aufgaben.faelligkeitsdatum` (owner: intent `dienstleister-buchen`)\n- `aufgaben.prioritaet` (owner: intent `dienstleister-buchen`)\n- `aufgaben.dienstleister` (owner: intent `dienstleister-buchen`)\n- `budget.tatsaechlicher_betrag` (owner: intent `zahlung-erfassen`)\n- `budget.zahlungsdatum` (owner: intent `zahlung-erfassen`)\n- `gaeste_und_einladungen.einladungsdatum` (owner: tool `einladungsdatum-setzen`)\n"
+    }
+  ],
+  "public_pages": [],
+  "tools": [
+    {
+      "id": "einladungsdatum-setzen",
+      "purpose": "Bei Änderung eines Gastes: wenn der Einladungsstatus auf eingeladen steht und kein Einladungsdatum gesetzt ist, wird das heutige Datum eingetragen. Prüft das Feld im Code."
+    },
+    {
+      "id": "budget-bezahlt-datum",
+      "purpose": "Bei Änderung eines Budgetpostens: steht der Zahlungsstatus auf bezahlt und es gibt kein Zahlungsdatum, wird heute eingetragen. Prüft das Feld im Code. Ergänzt das Datum auch bei Bearbeitung ohne Ablauf."
+    },
+    {
+      "id": "ueberfaellige-aufgaben-mail",
+      "purpose": "Täglich eine Sammelmail an das Brautpaar (Schlüsselinhaber) mit allen Aufgaben, deren Fälligkeitsdatum vorbei ist und die nicht erledigt sind. Schreibt keine Daten."
+    }
+  ],
+  "covered_by_platform": [
+    {
+      "wish": "Gästeliste, Aufgabenliste oder Budget als Tabelle weitergeben",
+      "feature": "csv_json_export"
+    },
+    {
+      "wish": "Gäste, Dienstleister oder Aufgaben suchen und filtern",
+      "feature": "search_filter"
+    },
+    {
+      "wish": "Übersicht, wie viele Gäste zugesagt oder abgesagt haben",
+      "feature": "distribution_view"
+    },
+    {
+      "wish": "Fotogalerie ansehen und Fotos verwalten",
+      "feature": "list_page"
+    },
+    {
+      "wish": "Verträge und Angebote an Dienstleister anhängen",
+      "feature": "record_attachments"
+    },
+    {
+      "wish": "Helfer und Trauzeugen mit eigenem Zugang",
+      "feature": "user_roles"
+    }
+  ],
+  "ownership": {
+    "gaeste_und_einladungen": {
+      "gast_firstname": "intent:gast-einladen",
+      "gast_lastname": "intent:gast-einladen",
+      "email": "intent:gast-einladen",
+      "telefon": "intent:gast-einladen",
+      "strasse": "intent:gast-einladen",
+      "hausnummer": "intent:gast-einladen",
+      "plz": "intent:gast-einladen",
+      "ort": "intent:gast-einladen",
+      "seite": "intent:gast-einladen",
+      "anzahl_personen": "intent:rueckmeldung-erfassen",
+      "menuewunsch": "intent:rueckmeldung-erfassen",
+      "allergien": "intent:rueckmeldung-erfassen",
+      "einladungsstatus": "intent:rueckmeldung-erfassen",
+      "rueckmeldedatum": "intent:rueckmeldung-erfassen",
+      "tisch": "intent:gast-an-tisch-setzen",
+      "einladungsdatum": "tool:einladungsdatum-setzen"
+    },
+    "dienstleister": {
+      "status": "intent:dienstleister-buchen"
+    },
+    "budget": {
+      "bezeichnung": "intent:dienstleister-buchen",
+      "kategorie": "intent:dienstleister-buchen",
+      "geplanter_betrag": "intent:dienstleister-buchen",
+      "zahlungsstatus": "intent:zahlung-erfassen",
+      "dienstleister": "intent:dienstleister-buchen",
+      "tatsaechlicher_betrag": "intent:zahlung-erfassen",
+      "zahlungsdatum": "intent:zahlung-erfassen"
+    },
+    "aufgaben": {
+      "titel": "intent:dienstleister-buchen",
+      "faelligkeitsdatum": "intent:dienstleister-buchen",
+      "prioritaet": "intent:dienstleister-buchen",
+      "status": "intent:aufgabe-abschliessen",
+      "dienstleister": "intent:dienstleister-buchen"
+    }
+  },
+  "dashboard": {
+    "focus": [
+      "Zugesagte, abgesagte und offene Gäste",
+      "Offene Aufgaben nach Fälligkeit",
+      "Geplantes gegenüber tatsächlichem Budget",
+      "Noch nicht gebuchte Dienstleister",
+      "Belegung der Tische"
+    ],
+    "hints": [
+      "Überfällige Aufgaben hervorheben",
+      "Gäste ohne Tisch anzeigen",
+      "Offene Zahlungen aus dem Budget zeigen"
+    ]
+  }
+}

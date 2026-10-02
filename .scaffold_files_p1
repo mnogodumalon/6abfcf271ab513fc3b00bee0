@@ -1,0 +1,1069 @@
+# Scaffold key file contents — part 1/2.
+Same rule as .scaffold_context: these files are pre-generated; never Read the source files themselves.
+
+## src/types/app.ts
+```
+import { lookupLabel } from '@/i18n';
+
+// AUTOMATICALLY GENERATED TYPES - DO NOT EDIT
+
+export type LookupValue = { key: string; label: string };
+/** A raw record URL (applookup reference). NEVER render this directly
+ *  in JSX — it is a URL, not a display value. Show the enriched `*Name`
+ *  field or resolve it via the entity map instead. Assignable to/from
+ *  string everywhere; the `& {}` keeps the alias NAME visible in tsc
+ *  error messages (a plain primitive alias gets normalized away). */
+export type RecordUrl = string & {};
+export type GeoLocation = { lat: number; long: number; info?: string };
+
+export type AttachmentType = 'file' | 'note' | 'url' | 'json';
+export interface Attachment {
+  id: string;
+  type: AttachmentType;
+  label: string | null;
+  value: string | null;
+  active: boolean;
+  createdat?: string | null;
+  updatedat?: string | null;
+}
+
+export interface AttachmentInput {
+  type: AttachmentType;
+  label?: string;
+  value: string;
+  active?: boolean;
+}
+
+export interface Tische {
+  record_id: string;
+  /** The API field. */
+  created_at: string;
+  updated_at: string | null;
+  /** Alias of created_at, filled by the read helpers. The API sends
+   *  snake_case only — reading `createdat` off a raw record yields
+   *  undefined, which type-checks and then crashes at runtime. */
+  createdat: string;
+  updatedat: string | null;
+  fields: {
+    tischname?: string;
+    tischnummer?: number;
+    anzahl_plaetze?: number;
+    standort?: string;
+    bemerkung?: string;
+  };
+}
+
+export interface GaesteUndEinladungen {
+  record_id: string;
+  /** The API field. */
+  created_at: string;
+  updated_at: string | null;
+  /** Alias of created_at, filled by the read helpers. The API sends
+   *  snake_case only — reading `createdat` off a raw record yields
+   *  undefined, which type-checks and then crashes at runtime. */
+  createdat: string;
+  updatedat: string | null;
+  fields: {
+    gast_firstname?: string;
+    gast_lastname?: string;
+    email?: string;
+    telefon?: string;
+    strasse?: string;
+    hausnummer?: string;
+    plz?: string;
+    ort?: string;
+    seite?: LookupValue;
+    anzahl_personen?: number;
+    einladungsstatus?: LookupValue;
+    einladungsdatum?: string; // Format: YYYY-MM-DD oder ISO String
+    rueckmeldedatum?: string; // Format: YYYY-MM-DD oder ISO String
+    menuewunsch?: LookupValue;
+    allergien?: string;
+    tisch?: RecordUrl; // applookup -> URL zu 'Tische' Record
+    bemerkung?: string;
+  };
+}
+
+export interface Dienstleister {
+  record_id: string;
+  /** The API field. */
+  created_at: string;
+  updated_at: string | null;
+  /** Alias of created_at, filled by the read helpers. The API sends
+   *  snake_case only — reading `createdat` off a raw record yields
+   *  undefined, which type-checks and then crashes at runtime. */
+  createdat: string;
+  updatedat: string | null;
+  fields: {
+    firmenname?: string;
+    kategorie?: LookupValue;
+    ansprechpartner_firstname?: string;
+    ansprechpartner_lastname?: string;
+    email?: string;
+    telefon?: string;
+    website?: string;
+    status?: LookupValue;
+    notizen?: string;
+  };
+}
+
+export interface Aufgaben {
+  record_id: string;
+  /** The API field. */
+  created_at: string;
+  updated_at: string | null;
+  /** Alias of created_at, filled by the read helpers. The API sends
+   *  snake_case only — reading `createdat` off a raw record yields
+   *  undefined, which type-checks and then crashes at runtime. */
+  createdat: string;
+  updatedat: string | null;
+  fields: {
+    titel?: string;
+    beschreibung?: string;
+    kategorie?: LookupValue;
+    faelligkeitsdatum?: string; // Format: YYYY-MM-DD oder ISO String
+    prioritaet?: LookupValue;
+    status?: LookupValue;
+    verantwortlich_firstname?: string;
+    verantwortlich_lastname?: string;
+    dienstleister?: RecordUrl; // applookup -> URL zu 'Dienstleister' Record
+  };
+}
+
+export interface Budget {
+  record_id: string;
+  /** The API field. */
+  created_at: string;
+  updated_at: string | null;
+  /** Alias of created_at, filled by the read helpers. The API sends
+   *  snake_case only — reading `createdat` off a raw record yields
+   *  undefined, which type-checks and then crashes at runtime. */
+  createdat: string;
+  updatedat: string | null;
+  fields: {
+    bezeichnung?: string;
+    kategorie?: LookupValue;
+    geplanter_betrag?: number;
+    tatsaechlicher_betrag?: number;
+    zahlungsstatus?: LookupValue;
+    zahlungsdatum?: string; // Format: YYYY-MM-DD oder ISO String
+    dienstleister?: RecordUrl; // applookup -> URL zu 'Dienstleister' Record
+  };
+}
+
+export interface Fotogalerie {
+  record_id: string;
+  /** The API field. */
+  created_at: string;
+  updated_at: string | null;
+  /** Alias of created_at, filled by the read helpers. The API sends
+   *  snake_case only — reading `createdat` off a raw record yields
+   *  undefined, which type-checks and then crashes at runtime. */
+  createdat: string;
+  updatedat: string | null;
+  fields: {
+    titel?: string;
+    foto?: string;
+    beschreibung?: string;
+    aufnahmedatum?: string; // Format: YYYY-MM-DD oder ISO String
+    anlass?: LookupValue;
+    gast?: RecordUrl; // applookup -> URL zu 'GaesteUndEinladungen' Record
+  };
+}
+
+export const APP_IDS = {
+  TISCHE: '6abfcef796d2c11262346c3a',
+  GAESTE_UND_EINLADUNGEN: '6abfcefedf29d3c3500ddc43',
+  DIENSTLEISTER: '6abfceffbfc167b80627c8a6',
+  AUFGABEN: '6abfceff7fc030c248606fb1',
+  BUDGET: '6abfcf000d4ceec4fbe4df9a',
+  FOTOGALERIE: '6abfcf01aab6f57ae44dbeb6',
+} as const;
+
+
+export const LOOKUP_OPTIONS: Record<string, Record<string, {key: string, label: string}[]>> = {
+  'gaeste_und_einladungen': {
+    seite: [{ key: "braut", get label() { return lookupLabel('gaeste_und_einladungen', 'seite', "braut") ?? "Braut"; } }, { key: "braeutigam", get label() { return lookupLabel('gaeste_und_einladungen', 'seite', "braeutigam") ?? "Bräutigam"; } }, { key: "gemeinsam", get label() { return lookupLabel('gaeste_und_einladungen', 'seite', "gemeinsam") ?? "Gemeinsam"; } }],
+    einladungsstatus: [{ key: "zugesagt", get label() { return lookupLabel('gaeste_und_einladungen', 'einladungsstatus', "zugesagt") ?? "Zugesagt"; } }, { key: "abgesagt", get label() { return lookupLabel('gaeste_und_einladungen', 'einladungsstatus', "abgesagt") ?? "Abgesagt"; } }, { key: "nicht_eingeladen", get label() { return lookupLabel('gaeste_und_einladungen', 'einladungsstatus', "nicht_eingeladen") ?? "Nicht eingeladen"; } }, { key: "eingeladen", get label() { return lookupLabel('gaeste_und_einladungen', 'einladungsstatus', "eingeladen") ?? "Eingeladen"; } }],
+    menuewunsch: [{ key: "fleisch", get label() { return lookupLabel('gaeste_und_einladungen', 'menuewunsch', "fleisch") ?? "Fleisch"; } }, { key: "fisch", get label() { return lookupLabel('gaeste_und_einladungen', 'menuewunsch', "fisch") ?? "Fisch"; } }, { key: "vegetarisch", get label() { return lookupLabel('gaeste_und_einladungen', 'menuewunsch', "vegetarisch") ?? "Vegetarisch"; } }, { key: "vegan", get label() { return lookupLabel('gaeste_und_einladungen', 'menuewunsch', "vegan") ?? "Vegan"; } }, { key: "kindermenue", get label() { return lookupLabel('gaeste_und_einladungen', 'menuewunsch', "kindermenue") ?? "Kindermenü"; } }],
+  },
+  'dienstleister': {
+    kategorie: [{ key: "location", get label() { return lookupLabel('dienstleister', 'kategorie', "location") ?? "Location"; } }, { key: "catering", get label() { return lookupLabel('dienstleister', 'kategorie', "catering") ?? "Catering"; } }, { key: "fotograf", get label() { return lookupLabel('dienstleister', 'kategorie', "fotograf") ?? "Fotograf"; } }, { key: "musik", get label() { return lookupLabel('dienstleister', 'kategorie', "musik") ?? "Musik"; } }, { key: "floristik", get label() { return lookupLabel('dienstleister', 'kategorie', "floristik") ?? "Floristik"; } }, { key: "sonstiges", get label() { return lookupLabel('dienstleister', 'kategorie', "sonstiges") ?? "Sonstiges"; } }],
+    status: [{ key: "anfrage", get label() { return lookupLabel('dienstleister', 'status', "anfrage") ?? "Anfrage"; } }, { key: "angebot_erhalten", get label() { return lookupLabel('dienstleister', 'status', "angebot_erhalten") ?? "Angebot erhalten"; } }, { key: "gebucht", get label() { return lookupLabel('dienstleister', 'status', "gebucht") ?? "Gebucht"; } }, { key: "abgesagt", get label() { return lookupLabel('dienstleister', 'status', "abgesagt") ?? "Abgesagt"; } }],
+  },
+  'aufgaben': {
+    kategorie: [{ key: "organisation", get label() { return lookupLabel('aufgaben', 'kategorie', "organisation") ?? "Organisation"; } }, { key: "einladungen", get label() { return lookupLabel('aufgaben', 'kategorie', "einladungen") ?? "Einladungen"; } }, { key: "dekoration", get label() { return lookupLabel('aufgaben', 'kategorie', "dekoration") ?? "Dekoration"; } }, { key: "kleidung", get label() { return lookupLabel('aufgaben', 'kategorie', "kleidung") ?? "Kleidung"; } }, { key: "verpflegung", get label() { return lookupLabel('aufgaben', 'kategorie', "verpflegung") ?? "Verpflegung"; } }, { key: "sonstiges", get label() { return lookupLabel('aufgaben', 'kategorie', "sonstiges") ?? "Sonstiges"; } }],
+    prioritaet: [{ key: "niedrig", get label() { return lookupLabel('aufgaben', 'prioritaet', "niedrig") ?? "Niedrig"; } }, { key: "mittel", get label() { return lookupLabel('aufgaben', 'prioritaet', "mittel") ?? "Mittel"; } }, { key: "hoch", get label() { return lookupLabel('aufgaben', 'prioritaet', "hoch") ?? "Hoch"; } }],
+    status: [{ key: "offen", get label() { return lookupLabel('aufgaben', 'status', "offen") ?? "Offen"; } }, { key: "in_arbeit", get label() { return lookupLabel('aufgaben', 'status', "in_arbeit") ?? "In Arbeit"; } }, { key: "erledigt", get label() { return lookupLabel('aufgaben', 'status', "erledigt") ?? "Erledigt"; } }],
+  },
+  'budget': {
+    kategorie: [{ key: "location", get label() { return lookupLabel('budget', 'kategorie', "location") ?? "Location"; } }, { key: "catering", get label() { return lookupLabel('budget', 'kategorie', "catering") ?? "Catering"; } }, { key: "kleidung", get label() { return lookupLabel('budget', 'kategorie', "kleidung") ?? "Kleidung"; } }, { key: "dekoration", get label() { return lookupLabel('budget', 'kategorie', "dekoration") ?? "Dekoration"; } }, { key: "fotograf", get label() { return lookupLabel('budget', 'kategorie', "fotograf") ?? "Fotograf"; } }, { key: "musik", get label() { return lookupLabel('budget', 'kategorie', "musik") ?? "Musik"; } }, { key: "sonstiges", get label() { return lookupLabel('budget', 'kategorie', "sonstiges") ?? "Sonstiges"; } }],
+    zahlungsstatus: [{ key: "offen", get label() { return lookupLabel('budget', 'zahlungsstatus', "offen") ?? "Offen"; } }, { key: "teilweise_bezahlt", get label() { return lookupLabel('budget', 'zahlungsstatus', "teilweise_bezahlt") ?? "Teilweise bezahlt"; } }, { key: "bezahlt", get label() { return lookupLabel('budget', 'zahlungsstatus', "bezahlt") ?? "Bezahlt"; } }],
+  },
+  'fotogalerie': {
+    anlass: [{ key: "vorbereitung", get label() { return lookupLabel('fotogalerie', 'anlass', "vorbereitung") ?? "Vorbereitung"; } }, { key: "trauung", get label() { return lookupLabel('fotogalerie', 'anlass', "trauung") ?? "Trauung"; } }, { key: "feier", get label() { return lookupLabel('fotogalerie', 'anlass', "feier") ?? "Feier"; } }, { key: "sonstiges", get label() { return lookupLabel('fotogalerie', 'anlass', "sonstiges") ?? "Sonstiges"; } }],
+  },
+};
+
+// Optimistic LookupValue writes: never re-type a label — resolve the schema
+// option instead (its label is a locale-aware getter; falls back to the key).
+// WRONG: status: { key: 'offen', label: 'Offen' }   (frozen in one language)
+// RIGHT: status: lookupOption('<appKey>', 'status', 'offen')
+export function lookupOption(app: string, field: string, key: string): LookupValue {
+  return LOOKUP_OPTIONS[app]?.[field]?.find(o => o.key === key) ?? { key, label: key };
+}
+
+export const FIELD_TYPES: Record<string, Record<string, string>> = {
+  'tische': {
+    'tischname': 'string/text',
+    'tischnummer': 'number',
+    'anzahl_plaetze': 'number',
+    'standort': 'string/text',
+    'bemerkung': 'string/textarea',
+  },
+  'gaeste_und_einladungen': {
+    'gast_firstname': 'string/text',
+    'gast_lastname': 'string/text',
+    'email': 'string/email',
+    'telefon': 'string/tel',
+    'strasse': 'string/text',
+    'hausnummer': 'string/text',
+    'plz': 'string/text',
+    'ort': 'string/text',
+    'seite': 'lookup/radio',
+    'anzahl_personen': 'number',
+    'einladungsstatus': 'lookup/select',
+    'einladungsdatum': 'date/date',
+    'rueckmeldedatum': 'date/date',
+    'menuewunsch': 'lookup/select',
+    'allergien': 'string/textarea',
+    'tisch': 'applookup/select',
+    'bemerkung': 'string/textarea',
+  },
+  'dienstleister': {
+    'firmenname': 'string/text',
+    'kategorie': 'lookup/select',
+    'ansprechpartner_firstname': 'string/text',
+    'ansprechpartner_lastname': 'string/text',
+    'email': 'string/email',
+    'telefon': 'string/tel',
+    'website': 'string/url',
+    'status': 'lookup/select',
+    'notizen': 'string/textarea',
+  },
+  'aufgaben': {
+    'titel': 'string/text',
+    'beschreibung': 'string/textarea',
+    'kategorie': 'lookup/select',
+    'faelligkeitsdatum': 'date/date',
+    'prioritaet': 'lookup/radio',
+    'status': 'lookup/select',
+    'verantwortlich_firstname': 'string/text',
+    'verantwortlich_lastname': 'string/text',
+    'dienstleister': 'applookup/select',
+  },
+  'budget': {
+    'bezeichnung': 'string/text',
+    'kategorie': 'lookup/select',
+    'geplanter_betrag': 'number',
+    'tatsaechlicher_betrag': 'number',
+    'zahlungsstatus': 'lookup/radio',
+    'zahlungsdatum': 'date/date',
+    'dienstleister': 'applookup/select',
+  },
+  'fotogalerie': {
+    'titel': 'string/text',
+    'foto': 'file',
+    'beschreibung': 'string/textarea',
+    'aufnahmedatum': 'date/date',
+    'anlass': 'lookup/select',
+    'gast': 'applookup/select',
+  },
+};
+
+export const HUB_TOPOLOGY: Record<string, { field: string; entity: string }[]> = {
+};
+
+type StripLookup<T> = {
+  [K in keyof T]: T[K] extends LookupValue | undefined ? string | LookupValue | undefined
+    : T[K] extends LookupValue[] | undefined ? string[] | LookupValue[] | undefined
+    : T[K];
+};
+
+// Helper Types for creating new records (lookup fields as plain strings for API)
+export type CreateTische = StripLookup<Tische['fields']>;
+export type CreateGaesteUndEinladungen = StripLookup<GaesteUndEinladungen['fields']>;
+export type CreateDienstleister = StripLookup<Dienstleister['fields']>;
+export type CreateAufgaben = StripLookup<Aufgaben['fields']>;
+export type CreateBudget = StripLookup<Budget['fields']>;
+export type CreateFotogalerie = StripLookup<Fotogalerie['fields']>;
+```
+
+## src/services/livingAppsService.ts
+```
+// AUTOMATICALLY GENERATED SERVICE
+import { APP_IDS, LOOKUP_OPTIONS, FIELD_TYPES } from '@/types/app';
+import { ensureUploadableImage } from '@/lib/ai';
+import { REST_URL } from '@/lib/origin';
+import type { Tische, GaesteUndEinladungen, Dienstleister, Aufgaben, Budget, Fotogalerie, CreateTische, CreateGaesteUndEinladungen, CreateDienstleister, CreateAufgaben, CreateBudget, CreateFotogalerie } from '@/types/app';
+
+// Base Configuration — the host is a RUNTIME fact (lib/origin.ts):
+// a bundle copied to another LA instance must talk to THAT instance.
+const API_BASE_URL = REST_URL;
+
+// --- HELPER FUNCTIONS ---
+export function extractRecordId(url: unknown): string | null {
+  if (!url) return null;
+  if (typeof url !== 'string') return null;
+  const match = url.match(/([a-f0-9]{24})$/i);
+  return match ? match[1] : null;
+}
+
+// multipleapplookup form-state is Array<URL>. The MultiCombobox picker
+// works on record-ids; this helper maps a raw form value (which may be
+// undefined, null, a single URL string from a legacy single-Combobox
+// render, or the expected URL array) to a clean string[] of ids.
+export function extractRecordIds(urls: unknown): string[] {
+  if (!urls) return [];
+  const arr = Array.isArray(urls) ? urls : [urls];
+  const out: string[] = [];
+  for (const u of arr) {
+    const id = extractRecordId(u);
+    if (id) out.push(id);
+  }
+  return out;
+}
+
+export function createRecordUrl(appId: string, recordId: string): string {
+  return `${API_BASE_URL}/apps/${appId}/records/${recordId}`;
+}
+
+export class LivingAppsApiError extends Error {
+  status: number;
+  type?: string;
+  control_identifier?: string;
+  control_type?: string;
+  field_type?: string;
+  detail?: string;
+  constructor(message: string, status: number, raw?: Record<string, unknown>) {
+    super(message);
+    this.name = 'LivingAppsApiError';
+    this.status = status;
+    if (raw) {
+      this.type = typeof raw.type === 'string' ? raw.type : undefined;
+      this.control_identifier = typeof raw.control_identifier === 'string' ? raw.control_identifier : undefined;
+      this.control_type = typeof raw.control_type === 'string' ? raw.control_type : undefined;
+      this.field_type = typeof raw.field_type === 'string' ? raw.field_type : undefined;
+      this.detail = typeof raw.detail === 'string' ? raw.detail : undefined;
+    }
+  }
+}
+
+async function parseErrorBody(response: Response): Promise<{ message: string; raw?: Record<string, unknown> }> {
+  const text = await response.text();
+  if (!text) return { message: `HTTP ${response.status}` };
+  try {
+    const raw = JSON.parse(text);
+    if (raw && typeof raw === 'object') {
+      const obj = raw as Record<string, unknown>;
+      const message = typeof obj.detail === 'string' ? obj.detail
+        : typeof obj.title === 'string' ? obj.title
+        : text;
+      return { message, raw: obj };
+    }
+  } catch { /* fall through to text */ }
+  return { message: text };
+}
+
+export interface CallApiOptions {
+  /** Skip errorbus dispatch for expected failures (e.g. optional-param 404s). */
+  silent?: boolean;
+  /** Abort the request (a keystroke replacing the previous search). */
+  signal?: AbortSignal;
+}
+
+/** Query options of GET /apps/{id}/records — filter/orderby are vSQL (see the journey layer's
+ *  buildSearchFilter; never concatenate user input into them yourself). */
+export interface RecordQuery {
+  filter?: string;
+  orderby?: string[];
+  limit?: number;
+  offset?: number;
+  /** Field projection (`field=` repeated). The record's `fields` then holds ONLY these keys. */
+  fields?: string[];
+  signal?: AbortSignal;
+}
+// URLSearchParams encodes spaces as `+` — the API accepts it (verified live
+// 2026-09-02: orderby=r.v_nachname+asc → 200, sorted; filter with + → 200).
+export function recordQueryString(q: RecordQuery): string {
+  const p = new URLSearchParams();
+  if (q.filter) p.set('filter', q.filter);
+  for (const o of q.orderby ?? []) p.append('orderby', o);
+  for (const f of q.fields ?? []) p.append('field', f);
+  if (q.limit !== undefined) p.set('limit', String(Math.max(1, Math.floor(q.limit))));
+  if (q.offset !== undefined) p.set('offset', String(Math.max(0, Math.floor(q.offset))));
+  const s = p.toString();
+  return s ? `?${s}` : '';
+}
+/** `[[n]]` from aggregate_records?value=count() -> n; `[]` -> 0; anything else -> 0 (never NaN). */
+export function parseAggregateCount(data: unknown): number {
+  if (!Array.isArray(data)) return 0;
+  if (data.length === 0) return 0;
+  const first = data[0];
+  const n = Array.isArray(first) ? Number(first[0]) : Number(first);
+  return Number.isFinite(n) ? n : 0;
+}
+
+/** What the create and update helpers resolve to. Same `record_id`
+ *  the read helpers expose, so the whole family behaves alike — the
+ *  raw REST answer only
+ *  carries `id`, and code that guessed (e.g. Object.keys(res)[0]) built
+ *  `/records/id` and got a 400 on the next write. */
+export interface MutationResult {
+  record_id: string;
+  id: string;
+  fields: Record<string, any>;
+  [key: string]: any;
+}
+
+async function callApi(method: string, endpoint: string, data?: any, options?: CallApiOptions) {
+  const silent = options?.silent === true;
+  let response: Response;
+  try {
+    response = await fetch(`${API_BASE_URL}${endpoint}`, {
+      method,
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',  // Nutze Session Cookies für Auth
+      signal: options?.signal,
+      body: data ? JSON.stringify(data) : undefined
+    });
+  } catch (netErr) {
+    // A search the user typed past is cancelled, not broken — it must not
+    // raise an error toast on its way out.
+    if (netErr instanceof Error && netErr.name === 'AbortError') throw netErr;
+    const message = netErr instanceof Error ? netErr.message : String(netErr);
+    if (!silent) {
+      window.dispatchEvent(new CustomEvent('errorbus:emit', { detail: {
+        source: 'network', message, status: 0,
+      } }));
+    }
+    throw netErr;
+  }
+  if (!response.ok) {
+    // 401/403 go to the login screen only — never to the errorbus (repair can't fix auth).
+    const isAuthError = response.status === 401 || response.status === 403;
+    if (isAuthError) window.dispatchEvent(new Event('auth-error'));
+    const { message, raw } = await parseErrorBody(response);
+    const err = new LivingAppsApiError(message, response.status, raw);
+    if (!silent && !isAuthError) {
+      window.dispatchEvent(new CustomEvent('errorbus:emit', { detail: {
+        source: 'api',
+        status: err.status,
+        type: err.type,
+        control_identifier: err.control_identifier,
+        control_type: err.control_type,
+        field_type: err.field_type,
+        detail: err.detail,
+        message: err.message,
+      } }));
+    }
+    throw err;
+  }
+  // DELETE returns often empty body or simple status
+  if (method === 'DELETE') return true;
+  return response.json();
+}
+
+/** Upload a file to LivingApps. Returns the file URL for use in record fields. */
+export async function uploadFile(file: File | Blob, filename?: string): Promise<string> {
+  // HEIC/HEIF (iPhone photos) crash the server-side image decoder (500).
+  // Convert to JPEG in the browser BEFORE upload — every upload path routes
+  // through here, so this one guard covers form fields AND attachments.
+  if (file instanceof File) file = await ensureUploadableImage(file);
+  const formData = new FormData();
+  formData.append('file', file, filename ?? (file instanceof File ? file.name : 'upload'));
+  const res = await fetch(`${API_BASE_URL}/files`, {
+    method: 'POST',
+    credentials: 'include',
+    body: formData,
+  });
+  if (!res.ok) {
+    if (res.status === 401 || res.status === 403) window.dispatchEvent(new Event('auth-error'));
+    throw new Error(`File upload failed: ${res.status}`);
+  }
+  const data = await res.json();
+  return data.url;
+}
+
+// --- ATTACHMENT API ---
+// Record-attachments: file/note/url/json blobs attached to a single record.
+// `getAttachments` returns a dict keyed by attachment id; we flatten to an array.
+export async function getRecordAttachments(appId: string, recordId: string) {
+  const data = await callApi('GET', `/apps/${appId}/records/${recordId}/attachments`, undefined, { silent: true }).catch(() => ({}));
+  if (!data || typeof data !== 'object') return [] as import('@/types/app').Attachment[];
+  return Object.entries(data).map(([id, att]) => ({ id, ...(att as Record<string, unknown>) })) as import('@/types/app').Attachment[];
+}
+
+export async function createRecordAttachment(appId: string, recordId: string, input: import('@/types/app').AttachmentInput) {
+  return callApi('POST', `/apps/${appId}/records/${recordId}/attachments`, input) as Promise<import('@/types/app').Attachment>;
+}
+
+export async function updateRecordAttachment(appId: string, recordId: string, attachmentId: string, input: Partial<import('@/types/app').AttachmentInput>) {
+  return callApi('PATCH', `/apps/${appId}/records/${recordId}/attachments/${attachmentId}`, input) as Promise<import('@/types/app').Attachment>;
+}
+
+export async function deleteRecordAttachment(appId: string, recordId: string, attachmentId: string) {
+  return callApi('DELETE', `/apps/${appId}/records/${recordId}/attachments/${attachmentId}`);
+}
+
+function enrichLookupFields<T extends { fields: Record<string, unknown> }>(
+  records: T[], entityKey: string
+): T[] {
+  const opts = LOOKUP_OPTIONS[entityKey];
+  if (!opts) return records;
+  return records.map(r => {
+    const fields = { ...r.fields };
+    for (const [fieldKey, options] of Object.entries(opts)) {
+      const val = fields[fieldKey];
+      if (typeof val === 'string') {
+        const m = options.find(o => o.key === val);
+        fields[fieldKey] = m ?? { key: val, label: val };
+      } else if (Array.isArray(val)) {
+        fields[fieldKey] = val.map(v => {
+          if (typeof v === 'string') {
+            const m = options.find(o => o.key === v);
+            return m ?? { key: v, label: v };
+          }
+          return v;
+        });
+      }
+    }
+    return { ...r, fields } as T;
+  });
+}
+
+/** A textarea that HOLDS A LIST but was typed on one line.
+ *
+ *  Rendering such a field as tiles/bullets is the natural thing to do, and
+ *  the natural way to write it is `value.split('\n')` — one item per line
+ *  is the convention every form implies. Owners type differently though:
+ *  a live landing page collapsed five services into ONE tile because the
+ *  record held 'Tagesbetreuung, Übernachtung, …' without a single line
+ *  break. Normalizing HERE makes that natural split correct whatever was
+ *  typed, instead of asking every page to re-derive the heuristic.
+ *
+ *  Deliberately conservative — prose must survive untouched:
+ *    · already has line breaks  → left alone (the author's own structure)
+ *    · ; • · |                  → unambiguous separators, 2 parts suffice
+ *    · commas                   → only with 3+ parts that all read like
+ *                                 labels: short, at most four words, no
+ *                                 sentence punctuation. A prose clause like
+ *                                 "Katzen und Kleintiere aller Rassen" is
+ *                                 short enough but not wordy-short.
+ *  Anything else stays as it is, so a wrong guess degrades to today's
+ *  behaviour (one item), never to mangled prose. */
+const LIST_LABEL_MAX = 40;
+const LIST_LABEL_MAX_WORDS = 4;
+function listTextToLines(text: string): string {
+  if (!text || /\r?\n/.test(text)) return text;
+  const bulleted = text.split(/\s*[;•·|]\s*/).map(s => s.trim()).filter(Boolean);
+  if (bulleted.length >= 2) return bulleted.join('\n');
+  const parts = text.split(/\s*,\s*/).map(s => s.trim()).filter(Boolean);
+  const looksLikeLabels = parts.length >= 3 && parts.every(p =>
+    p.length <= LIST_LABEL_MAX
+    && p.split(/\s+/).length <= LIST_LABEL_MAX_WORDS
+    && !/[.!?:]$/.test(p));
+  return looksLikeLabels ? parts.join('\n') : text;
+}
+
+function normalizeListTextareas<T extends { fields: Record<string, unknown> }>(
+  records: T[], entityKey: string
+): T[] {
+  const types = FIELD_TYPES[entityKey];
+  if (!types) return records;
+  const areas = Object.keys(types).filter(k => types[k] === 'string/textarea');
+  if (areas.length === 0) return records;
+  return records.map(r => {
+    let touched = false;
+    const fields = { ...r.fields };
+    for (const key of areas) {
+      const val = fields[key];
+      if (typeof val !== 'string') continue;
+      const next = listTextToLines(val);
+      if (next !== val) { fields[key] = next; touched = true; }
+    }
+    return touched ? ({ ...r, fields } as T) : r;
+  });
+}
+
+/** The one post-processing step every READ goes through: lookup objects
+ *  attached, list-ish textareas line-broken. Read helpers call this, not
+ *  the individual passes. */
+function hydrateRecords<T extends { fields: Record<string, unknown> }>(
+  records: T[], entityKey: string
+): T[] {
+  return normalizeListTextareas(enrichLookupFields(records, entityKey), entityKey);
+}
+
+/** Normalize fields for API writes: strip lookup objects to keys, fix date formats. */
+export function cleanFieldsForApi(
+  fields: Record<string, unknown>,
+  entityKey: string
+): Record<string, unknown> {
+  const clean: Record<string, unknown> = { ...fields };
+  // Strip virtual / unknown keys before they hit the API. Sub-agent invents
+  // computed-only keys (e.g. `_netto`, `_bestellung_gesamtbetrag`) for the
+  // 'Berechnungen' display, and a leaky submit-backfill would otherwise send
+  // them to the Living-Apps backend which rejects with 'field does not exist'.
+  const known = FIELD_TYPES[entityKey];
+  if (known) {
+    for (const k of Object.keys(clean)) {
+      if (!(k in known)) delete clean[k];
+    }
+  }
+  for (const [k, v] of Object.entries(clean)) {
+    if (v && typeof v === 'object' && !Array.isArray(v) && 'key' in v) clean[k] = (v as any).key;
+    if (Array.isArray(v)) clean[k] = v.map((item: any) => item && typeof item === 'object' && 'key' in item ? item.key : item);
+  }
+  const types = FIELD_TYPES[entityKey];
+  if (types) {
+    for (const [k, ft] of Object.entries(types)) {
+      if (!(k in clean)) continue;
+      const val = clean[k];
+      // applookup fields: undefined → null (clear single reference)
+      if ((ft === 'applookup/select' || ft === 'applookup/choice') && val === undefined) { clean[k] = null; continue; }
+      // multipleapplookup fields: undefined/null → [] (clear multi reference)
+      if ((ft === 'multipleapplookup/select' || ft === 'multipleapplookup/choice') && (val === undefined || val === null)) { clean[k] = []; continue; }
+      // lookup fields: undefined → null (clear single lookup)
+      if ((ft.startsWith('lookup/')) && val === undefined) { clean[k] = null; continue; }
+      // multiplelookup fields: undefined/null → [] (clear multi lookup)
+      if ((ft.startsWith('multiplelookup/')) && (val === undefined || val === null)) { clean[k] = []; continue; }
+      if (typeof val !== 'string' || !val) continue;
+      if (ft === 'date/datetimeminute') clean[k] = val.slice(0, 16);
+      else if (ft === 'date/date') clean[k] = val.slice(0, 10);
+    }
+  }
+  return clean;
+}
+
+let _cachedUserProfile: Record<string, unknown> | null = null;
+
+export async function getUserProfile(): Promise<Record<string, unknown>> {
+  if (_cachedUserProfile) return _cachedUserProfile;
+  const raw = await callApi('GET', '/user');
+  const skip = new Set(['id', 'image', 'lang', 'gender', 'title', 'fax', 'menus', 'initials']);
+  const data: Record<string, unknown> = {};
+  for (const [k, v] of Object.entries(raw)) {
+    if (v != null && !skip.has(k)) data[k] = v;
+  }
+  _cachedUserProfile = data;
+  return data;
+}
+
+export interface HeaderProfile {
+  firstname: string;
+  surname: string;
+  email: string;
+  image: string | null;
+  company: string | null;
+}
+
+let _cachedHeaderProfile: HeaderProfile | null = null;
+
+export async function getHeaderProfile(): Promise<HeaderProfile> {
+  if (_cachedHeaderProfile) return _cachedHeaderProfile;
+  const raw = await callApi('GET', '/user');
+  _cachedHeaderProfile = {
+    firstname: raw.firstname ?? '',
+    surname: raw.surname ?? '',
+    email: raw.email ?? '',
+    image: raw.image ?? null,
+    company: raw.company ?? null,
+  };
+  return _cachedHeaderProfile;
+}
+
+export interface AppGroupInfo {
+  id: string;
+  name: string;
+  image: string | null;
+  createdat: string;
+  /** Resolved link: /objects/{id}/ if the dashboard exists, otherwise /gateway/apps/{firstAppId}?template=list_page */
+  href: string;
+}
+
+let _cachedAppGroups: AppGroupInfo[] | null = null;
+
+export async function getAppGroups(): Promise<AppGroupInfo[]> {
+  if (_cachedAppGroups) return _cachedAppGroups;
+  const raw = await callApi('GET', '/appgroups?with=apps');
+  const groups: AppGroupInfo[] = Object.values(raw)
+    .map((g: any) => {
+      const firstAppId = Object.keys(g.apps ?? {})[0] ?? g.id;
+      return {
+        id: g.id,
+        name: g.name,
+        image: g.image ?? null,
+        // API field is created_at (snake_case) — the old camelCase read
+        // left every group '', silently disabling the newest-first sort.
+        createdat: g.created_at ?? g.createdat ?? '',
+        href: `/gateway/apps/${firstAppId}?template=list_page`,
+        _firstAppId: firstAppId,
+      };
+    })
+    .sort((a, b) => b.createdat.localeCompare(a.createdat));
+
+  // Check which appgroups have a deployed dashboard via app params
+  const paramChecks = await Promise.allSettled(
+    groups.map(g => callApi('GET', `/apps/${(g as any)._firstAppId}/params/la_page_header_additional_url`, undefined, { silent: true }))
+  );
+  paramChecks.forEach((result, i) => {
+    if (result.status !== 'fulfilled' || !result.value) return;
+    const url = result.value.value;
+    if (typeof url === 'string' && url.length > 0) {
+      try { groups[i].href = new URL(url).pathname; } catch { groups[i].href = url; }
+    }
+  });
+
+  // Clean up internal helper property
+  groups.forEach(g => delete (g as any)._firstAppId);
+
+  _cachedAppGroups = groups;
+  return _cachedAppGroups;
+}
+
+export class LivingAppsService {
+  // --- TISCHE ---
+  static async getTische(): Promise<Tische[]> {
+    const data = await callApi('GET', `/apps/${APP_IDS.TISCHE}/records`);
+    const records = Object.entries(data).map(([id, rec]: [string, any]) => ({
+      record_id: id, ...rec,
+      createdat: rec.created_at ?? '', updatedat: rec.updated_at ?? null,
+    })) as Tische[];
+    return hydrateRecords(records, 'tische');
+  }
+  static async queryTische(q: RecordQuery = {}): Promise<Tische[]> {
+    const data = await callApi('GET', `/apps/${APP_IDS.TISCHE}/records${recordQueryString(q)}`, undefined, { signal: q.signal });
+    const records = Object.entries(data).map(([id, rec]: [string, any]) => ({
+      record_id: id, ...rec,
+      createdat: rec.created_at ?? '', updatedat: rec.updated_at ?? null,
+    })) as Tische[];
+    return hydrateRecords(records, 'tische');
+  }
+  static async countTische(filter?: string, signal?: AbortSignal): Promise<number> {
+    const data = await callApi('GET', `/apps/${APP_IDS.TISCHE}/aggregate_records${recordQueryString({ filter })}${filter ? '&' : '?'}value=count()`, undefined, { signal, silent: true });
+    return parseAggregateCount(data);
+  }
+  static async getTischeEntry(id: string): Promise<Tische | undefined> {
+    const data = await callApi('GET', `/apps/${APP_IDS.TISCHE}/records/${id}`);
+    const record = { record_id: data.id, ...data, createdat: data.created_at ?? '', updatedat: data.updated_at ?? null } as Tische;
+    return hydrateRecords([record], 'tische')[0];
+  }
+  static async createTischeEntry(fields: CreateTische): Promise<MutationResult> {
+    const data = await callApi('POST', `/apps/${APP_IDS.TISCHE}/records`, { fields: cleanFieldsForApi(fields as any, 'tische') });
+    return { ...data, record_id: data.id };
+  }
+  static async updateTischeEntry(id: string, fields: Partial<CreateTische>): Promise<MutationResult> {
+    const data = await callApi('PATCH', `/apps/${APP_IDS.TISCHE}/records/${id}`, { fields: cleanFieldsForApi(fields as any, 'tische') });
+    return { ...data, record_id: data.id };
+  }
+  static async deleteTischeEntry(id: string) {
+    return callApi('DELETE', `/apps/${APP_IDS.TISCHE}/records/${id}`);
+  }
+
+  // --- GAESTE_UND_EINLADUNGEN ---
+  static async getGaesteUndEinladungen(): Promise<GaesteUndEinladungen[]> {
+    const data = await callApi('GET', `/apps/${APP_IDS.GAESTE_UND_EINLADUNGEN}/records`);
+    const records = Object.entries(data).map(([id, rec]: [string, any]) => ({
+      record_id: id, ...rec,
+      createdat: rec.created_at ?? '', updatedat: rec.updated_at ?? null,
+    })) as GaesteUndEinladungen[];
+    return hydrateRecords(records, 'gaeste_und_einladungen');
+  }
+  static async queryGaesteUndEinladungen(q: RecordQuery = {}): Promise<GaesteUndEinladungen[]> {
+    const data = await callApi('GET', `/apps/${APP_IDS.GAESTE_UND_EINLADUNGEN}/records${recordQueryString(q)}`, undefined, { signal: q.signal });
+    const records = Object.entries(data).map(([id, rec]: [string, any]) => ({
+      record_id: id, ...rec,
+      createdat: rec.created_at ?? '', updatedat: rec.updated_at ?? null,
+    })) as GaesteUndEinladungen[];
+    return hydrateRecords(records, 'gaeste_und_einladungen');
+  }
+  static async countGaesteUndEinladungen(filter?: string, signal?: AbortSignal): Promise<number> {
+    const data = await callApi('GET', `/apps/${APP_IDS.GAESTE_UND_EINLADUNGEN}/aggregate_records${recordQueryString({ filter })}${filter ? '&' : '?'}value=count()`, undefined, { signal, silent: true });
+    return parseAggregateCount(data);
+  }
+  static async getGaesteUndEinladungenEntry(id: string): Promise<GaesteUndEinladungen | undefined> {
+    const data = await callApi('GET', `/apps/${APP_IDS.GAESTE_UND_EINLADUNGEN}/records/${id}`);
+    const record = { record_id: data.id, ...data, createdat: data.created_at ?? '', updatedat: data.updated_at ?? null } as GaesteUndEinladungen;
+    return hydrateRecords([record], 'gaeste_und_einladungen')[0];
+  }
+  static async createGaesteUndEinladungenEntry(fields: CreateGaesteUndEinladungen): Promise<MutationResult> {
+    const data = await callApi('POST', `/apps/${APP_IDS.GAESTE_UND_EINLADUNGEN}/records`, { fields: cleanFieldsForApi(fields as any, 'gaeste_und_einladungen') });
+    return { ...data, record_id: data.id };
+  }
+  static async updateGaesteUndEinladungenEntry(id: string, fields: Partial<CreateGaesteUndEinladungen>): Promise<MutationResult> {
+    const data = await callApi('PATCH', `/apps/${APP_IDS.GAESTE_UND_EINLADUNGEN}/records/${id}`, { fields: cleanFieldsForApi(fields as any, 'gaeste_und_einladungen') });
+    return { ...data, record_id: data.id };
+  }
+  static async deleteGaesteUndEinladungenEntry(id: string) {
+    return callApi('DELETE', `/apps/${APP_IDS.GAESTE_UND_EINLADUNGEN}/records/${id}`);
+  }
+
+  // --- DIENSTLEISTER ---
+  static async getDienstleister(): Promise<Dienstleister[]> {
+    const data = await callApi('GET', `/apps/${APP_IDS.DIENSTLEISTER}/records`);
+    const records = Object.entries(data).map(([id, rec]: [string, any]) => ({
+      record_id: id, ...rec,
+      createdat: rec.created_at ?? '', updatedat: rec.updated_at ?? null,
+    })) as Dienstleister[];
+    return hydrateRecords(records, 'dienstleister');
+  }
+  static async queryDienstleister(q: RecordQuery = {}): Promise<Dienstleister[]> {
+    const data = await callApi('GET', `/apps/${APP_IDS.DIENSTLEISTER}/records${recordQueryString(q)}`, undefined, { signal: q.signal });
+    const records = Object.entries(data).map(([id, rec]: [string, any]) => ({
+      record_id: id, ...rec,
+      createdat: rec.created_at ?? '', updatedat: rec.updated_at ?? null,
+    })) as Dienstleister[];
+    return hydrateRecords(records, 'dienstleister');
+  }
+  static async countDienstleister(filter?: string, signal?: AbortSignal): Promise<number> {
+    const data = await callApi('GET', `/apps/${APP_IDS.DIENSTLEISTER}/aggregate_records${recordQueryString({ filter })}${filter ? '&' : '?'}value=count()`, undefined, { signal, silent: true });
+    return parseAggregateCount(data);
+  }
+  static async getDienstleisterEntry(id: string): Promise<Dienstleister | undefined> {
+    const data = await callApi('GET', `/apps/${APP_IDS.DIENSTLEISTER}/records/${id}`);
+    const record = { record_id: data.id, ...data, createdat: data.created_at ?? '', updatedat: data.updated_at ?? null } as Dienstleister;
+    return hydrateRecords([record], 'dienstleister')[0];
+  }
+  static async createDienstleisterEntry(fields: CreateDienstleister): Promise<MutationResult> {
+    const data = await callApi('POST', `/apps/${APP_IDS.DIENSTLEISTER}/records`, { fields: cleanFieldsForApi(fields as any, 'dienstleister') });
+    return { ...data, record_id: data.id };
+  }
+  static async updateDienstleisterEntry(id: string, fields: Partial<CreateDienstleister>): Promise<MutationResult> {
+    const data = await callApi('PATCH', `/apps/${APP_IDS.DIENSTLEISTER}/records/${id}`, { fields: cleanFieldsForApi(fields as any, 'dienstleister') });
+    return { ...data, record_id: data.id };
+  }
+  static async deleteDienstleisterEntry(id: string) {
+    return callApi('DELETE', `/apps/${APP_IDS.DIENSTLEISTER}/records/${id}`);
+  }
+
+  // --- AUFGABEN ---
+  static async getAufgaben(): Promise<Aufgaben[]> {
+    const data = await callApi('GET', `/apps/${APP_IDS.AUFGABEN}/records`);
+    const records = Object.entries(data).map(([id, rec]: [string, any]) => ({
+      record_id: id, ...rec,
+      createdat: rec.created_at ?? '', updatedat: rec.updated_at ?? null,
+    })) as Aufgaben[];
+    return hydrateRecords(records, 'aufgaben');
+  }
+  static async queryAufgaben(q: RecordQuery = {}): Promise<Aufgaben[]> {
+    const data = await callApi('GET', `/apps/${APP_IDS.AUFGABEN}/records${recordQueryString(q)}`, undefined, { signal: q.signal });
+    const records = Object.entries(data).map(([id, rec]: [string, any]) => ({
+      record_id: id, ...rec,
+      createdat: rec.created_at ?? '', updatedat: rec.updated_at ?? null,
+    })) as Aufgaben[];
+    return hydrateRecords(records, 'aufgaben');
+  }
+  static async countAufgaben(filter?: string, signal?: AbortSignal): Promise<number> {
+    const data = await callApi('GET', `/apps/${APP_IDS.AUFGABEN}/aggregate_records${recordQueryString({ filter })}${filter ? '&' : '?'}value=count()`, undefined, { signal, silent: true });
+    return parseAggregateCount(data);
+  }
+  static async getAufgabenEntry(id: string): Promise<Aufgaben | undefined> {
+    const data = await callApi('GET', `/apps/${APP_IDS.AUFGABEN}/records/${id}`);
+    const record = { record_id: data.id, ...data, createdat: data.created_at ?? '', updatedat: data.updated_at ?? null } as Aufgaben;
+    return hydrateRecords([record], 'aufgaben')[0];
+  }
+  static async createAufgabenEntry(fields: CreateAufgaben): Promise<MutationResult> {
+    const data = await callApi('POST', `/apps/${APP_IDS.AUFGABEN}/records`, { fields: cleanFieldsForApi(fields as any, 'aufgaben') });
+    return { ...data, record_id: data.id };
+  }
+  static async updateAufgabenEntry(id: string, fields: Partial<CreateAufgaben>): Promise<MutationResult> {
+    const data = await callApi('PATCH', `/apps/${APP_IDS.AUFGABEN}/records/${id}`, { fields: cleanFieldsForApi(fields as any, 'aufgaben') });
+    return { ...data, record_id: data.id };
+  }
+  static async deleteAufgabenEntry(id: string) {
+    return callApi('DELETE', `/apps/${APP_IDS.AUFGABEN}/records/${id}`);
+  }
+
+  // --- BUDGET ---
+  static async getBudget(): Promise<Budget[]> {
+    const data = await callApi('GET', `/apps/${APP_IDS.BUDGET}/records`);
+    const records = Object.entries(data).map(([id, rec]: [string, any]) => ({
+      record_id: id, ...rec,
+      createdat: rec.created_at ?? '', updatedat: rec.updated_at ?? null,
+    })) as Budget[];
+    return hydrateRecords(records, 'budget');
+  }
+  static async queryBudget(q: RecordQuery = {}): Promise<Budget[]> {
+    const data = await callApi('GET', `/apps/${APP_IDS.BUDGET}/records${recordQueryString(q)}`, undefined, { signal: q.signal });
+    const records = Object.entries(data).map(([id, rec]: [string, any]) => ({
+      record_id: id, ...rec,
+      createdat: rec.created_at ?? '', updatedat: rec.updated_at ?? null,
+    })) as Budget[];
+    return hydrateRecords(records, 'budget');
+  }
+  static async countBudget(filter?: string, signal?: AbortSignal): Promise<number> {
+    const data = await callApi('GET', `/apps/${APP_IDS.BUDGET}/aggregate_records${recordQueryString({ filter })}${filter ? '&' : '?'}value=count()`, undefined, { signal, silent: true });
+    return parseAggregateCount(data);
+  }
+  static async getBudgetEntry(id: string): Promise<Budget | undefined> {
+    const data = await callApi('GET', `/apps/${APP_IDS.BUDGET}/records/${id}`);
+    const record = { record_id: data.id, ...data, createdat: data.created_at ?? '', updatedat: data.updated_at ?? null } as Budget;
+    return hydrateRecords([record], 'budget')[0];
+  }
+  static async createBudgetEntry(fields: CreateBudget): Promise<MutationResult> {
+    const data = await callApi('POST', `/apps/${APP_IDS.BUDGET}/records`, { fields: cleanFieldsForApi(fields as any, 'budget') });
+    return { ...data, record_id: data.id };
+  }
+  static async updateBudgetEntry(id: string, fields: Partial<CreateBudget>): Promise<MutationResult> {
+    const data = await callApi('PATCH', `/apps/${APP_IDS.BUDGET}/records/${id}`, { fields: cleanFieldsForApi(fields as any, 'budget') });
+    return { ...data, record_id: data.id };
+  }
+  static async deleteBudgetEntry(id: string) {
+    return callApi('DELETE', `/apps/${APP_IDS.BUDGET}/records/${id}`);
+  }
+
+  // --- FOTOGALERIE ---
+  static async getFotogalerie(): Promise<Fotogalerie[]> {
+    const data = await callApi('GET', `/apps/${APP_IDS.FOTOGALERIE}/records`);
+    const records = Object.entries(data).map(([id, rec]: [string, any]) => ({
+      record_id: id, ...rec,
+      createdat: rec.created_at ?? '', updatedat: rec.updated_at ?? null,
+    })) as Fotogalerie[];
+    return hydrateRecords(records, 'fotogalerie');
+  }
+  static async queryFotogalerie(q: RecordQuery = {}): Promise<Fotogalerie[]> {
+    const data = await callApi('GET', `/apps/${APP_IDS.FOTOGALERIE}/records${recordQueryString(q)}`, undefined, { signal: q.signal });
+    const records = Object.entries(data).map(([id, rec]: [string, any]) => ({
+      record_id: id, ...rec,
+      createdat: rec.created_at ?? '', updatedat: rec.updated_at ?? null,
+    })) as Fotogalerie[];
+    return hydrateRecords(records, 'fotogalerie');
+  }
+  static async countFotogalerie(filter?: string, signal?: AbortSignal): Promise<number> {
+    const data = await callApi('GET', `/apps/${APP_IDS.FOTOGALERIE}/aggregate_records${recordQueryString({ filter })}${filter ? '&' : '?'}value=count()`, undefined, { signal, silent: true });
+    return parseAggregateCount(data);
+  }
+  static async getFotogalerieEntry(id: string): Promise<Fotogalerie | undefined> {
+    const data = await callApi('GET', `/apps/${APP_IDS.FOTOGALERIE}/records/${id}`);
+    const record = { record_id: data.id, ...data, createdat: data.created_at ?? '', updatedat: data.updated_at ?? null } as Fotogalerie;
+    return hydrateRecords([record], 'fotogalerie')[0];
+  }
+  static async createFotogalerieEntry(fields: CreateFotogalerie): Promise<MutationResult> {
+    const data = await callApi('POST', `/apps/${APP_IDS.FOTOGALERIE}/records`, { fields: cleanFieldsForApi(fields as any, 'fotogalerie') });
+    return { ...data, record_id: data.id };
+  }
+  static async updateFotogalerieEntry(id: string, fields: Partial<CreateFotogalerie>): Promise<MutationResult> {
+    const data = await callApi('PATCH', `/apps/${APP_IDS.FOTOGALERIE}/records/${id}`, { fields: cleanFieldsForApi(fields as any, 'fotogalerie') });
+    return { ...data, record_id: data.id };
+  }
+  static async deleteFotogalerieEntry(id: string) {
+    return callApi('DELETE', `/apps/${APP_IDS.FOTOGALERIE}/records/${id}`);
+  }
+
+}
+```
+
+## src/App.tsx
+```
+import '@/lib/sentry';
+import '@/lib/stale-bundle';
+import { Fragment, lazy, Suspense, useEffect, useState } from 'react';
+import { HashRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { locale, onLocaleChange, syncProfileLocale, t } from '@/i18n';
+import { ErrorBoundary } from '@/components/ErrorBoundary';
+import { ErrorBusProvider } from '@/components/ErrorBus';
+import { Layout } from '@/components/Layout';
+import DashboardReady from '@/pages/DashboardReady';
+import PublicPagesAdmin from '@/pages/PublicPagesAdmin';
+import PublicPageFields from '@/pages/PublicPageFields';
+import IntentFields from '@/pages/IntentFields';
+import { IntentPolicyLoader } from '@/components/IntentPolicyLoader';
+import IntentsAdmin from '@/pages/IntentsAdmin';
+import AppMap from '@/pages/AppMap';
+// <custom:imports>
+// </custom:imports>
+
+// Lazy: public pages live outside <Layout> and only load on /#/public/:slug —
+// dashboard users never pay for them, anonymous visitors skip the dashboard.
+const PublicPage = lazy(() => import('@/pages/public/PublicPage'));
+
+function RouteNotFound() {
+  const { pathname } = useLocation();
+  return (
+    <div className="max-w-xl mx-auto mt-16 rounded-[27px] bg-card shadow-lg p-8 space-y-3" role="alert">
+      <h1 className="text-xl font-semibold tracking-tight">{t('nf_title')}</h1>
+      <p className="text-sm text-muted-foreground break-all">{t('nf_message', { path: pathname })}</p>
+      <a href="#/" className="inline-flex text-sm font-medium text-primary hover:underline">{t('nf_back')}</a>
+    </div>
+  );
+}
+
+// Language switch = full remount below the router: every t()/label lookup
+// re-evaluates, the la-* widgets re-read <html lang>. Sits inside HashRouter
+// so the current route survives (it re-reads the URL hash).
+function LocaleGate({ children }: { children: React.ReactNode }) {
+  // The i18n layer notifies for locale CHANGES and for catalog/overlay
+  // ARRIVALS (same locale, new data). `setCurrent(locale)` bailed out on
+  // the arrivals — when locales/pages.json lost the race against the first
+  // paint, the page stayed frozen in the build language until the next
+  // locale switch. A generation counter accepts every notification; the
+  // key must include it because `children` is the same element object on
+  // every gate render (React would bail out without the remount).
+  const [gen, setGen] = useState(0);
+  useEffect(() => onLocaleChange(() => setGen((g) => g + 1)), []);
+  // Adopt the LA profile language (SSOT) — but never on public routes,
+  // where the visitor's browser language governs (initPublicLocale).
+  useEffect(() => {
+    if (!window.location.hash.startsWith('#/public')) void syncProfileLocale();
+  }, []);
+  return <Fragment key={`${locale}:${gen}`}>{children}</Fragment>;
+}
+
+const APPGROUP_ID = '6abfcf271ab513fc3b00bee0';
+
+// The assistant (chat + Werkzeuge + code viewer) is platform chrome:
+// <la-klar-assistant>, loaded via /actions-agent/embed/embed.js (appended
+// dynamically in index.html). Own shadow DOM, own styling. Mounted OUTSIDE
+// LocaleGate on purpose — its keyed remounts (locale switch, catalog
+// arrival) must not tear the element down mid-chat; the element follows
+// <html lang> itself. Hidden on anonymous public routes; its 401 guard is
+// the backstop, not the mechanism.
+function AssistantMount() {
+  const location = useLocation();
+  if (location.pathname.startsWith('/public')) return null;
+  return <la-klar-assistant appgroup-id={APPGROUP_ID} />;
+}
+
+export default function App() {
+  return (
+    <ErrorBoundary>
+      <ErrorBusProvider>
+        <HashRouter>
+            <AssistantMount />
+            <IntentPolicyLoader />
+            <LocaleGate>
+            <Routes>
+              <Route path="public/:slug" element={<Suspense fallback={null}><PublicPage /></Suspense>} />
+              <Route element={<Layout />}>
+                <Route index element={<DashboardReady />} />
+                <Route path="verwaltung/ablaeufe" element={<IntentsAdmin />} />
+                <Route path="verwaltung/anwendung" element={<AppMap />} />
+                <Route path="verwaltung/ablaeufe/:slug/felder" element={<IntentFields />} />
+                <Route path="verwaltung/oeffentliche-seiten" element={<PublicPagesAdmin />} />
+                <Route path="verwaltung/oeffentliche-seiten/:slug/felder" element={<PublicPageFields />} />
+                {/* <custom:routes> */}
+                {/* </custom:routes> */}
+                {/* An unknown hash (a bookmark from before a rebuild renamed the
+                    flows, a mistyped link) must not be a blank page. */}
+                <Route path="*" element={<RouteNotFound />} />
+              </Route>
+            </Routes>
+            </LocaleGate>
+        </HashRouter>
+      </ErrorBusProvider>
+    </ErrorBoundary>
+  );
+}
+
+```

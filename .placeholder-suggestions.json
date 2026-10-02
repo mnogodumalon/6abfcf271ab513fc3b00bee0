@@ -1,0 +1,56 @@
+{
+  "TischeDialog.tsx": {
+    "tischname": "z. B. Brauttisch",
+    "tischnummer": "z. B. 1",
+    "anzahl_plaetze": "z. B. 8",
+    "standort": "z. B. Am Fenster",
+    "bemerkung": "Besonderheiten zum Tisch"
+  },
+  "GaesteUndEinladungenDialog.tsx": {
+    "gast_firstname": "z. B. Anna",
+    "gast_lastname": "z. B. Müller",
+    "email": "z. B. anna@beispiel.de",
+    "strasse": "z. B. Lindenallee",
+    "hausnummer": "z. B. 12a",
+    "plz": "z. B. 80331",
+    "ort": "z. B. München",
+    "anzahl_personen": "z. B. 2",
+    "einladungsdatum": "Wann wurde eingeladen?",
+    "rueckmeldedatum": "Wann kam die Antwort?",
+    "allergien": "Welche Unverträglichkeiten gibt es?",
+    "tisch": "Welcher Tisch?",
+    "bemerkung": "Weitere Hinweise zum Gast"
+  },
+  "DienstleisterDialog.tsx": {
+    "firmenname": "z. B. Blumen Müller GmbH",
+    "kategorie": "z. B. Catering, Musik",
+    "ansprechpartner_firstname": "z. B. Anna",
+    "ansprechpartner_lastname": "z. B. Müller",
+    "email": "z. B. info@firma.de",
+    "website": "z. B. www.firma.de",
+    "notizen": "Wichtige Absprachen und Details"
+  },
+  "AufgabenDialog.tsx": {
+    "titel": "z. B. Blumen bestellen",
+    "beschreibung": "Was ist zu erledigen?",
+    "kategorie": "z. B. Dekoration, Kleidung",
+    "faelligkeitsdatum": "Bis wann ist es fällig?",
+    "verantwortlich_firstname": "z. B. Anna",
+    "verantwortlich_lastname": "z. B. Müller",
+    "dienstleister": "Welcher Dienstleister?"
+  },
+  "BudgetDialog.tsx": {
+    "bezeichnung": "z. B. Hochzeitstorte",
+    "kategorie": "z. B. Catering, Musik",
+    "geplanter_betrag": "z. B. 2500",
+    "tatsaechlicher_betrag": "z. B. 2350",
+    "zahlungsdatum": "Wann wurde gezahlt?",
+    "dienstleister": "Welcher Dienstleister?"
+  },
+  "FotogalerieDialog.tsx": {
+    "titel": "z. B. Erster Tanz",
+    "beschreibung": "Was ist auf dem Foto zu sehen?",
+    "aufnahmedatum": "Wann wurde es aufgenommen?",
+    "gast": "Welcher Gast ist zu sehen?"
+  }
+}
