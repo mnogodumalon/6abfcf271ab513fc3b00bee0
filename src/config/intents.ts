@@ -20,6 +20,7 @@
 import type { ComponentType } from 'react';
 
 // <custom:intent-imports>
+import { IconMailPlus, IconMessageCheck, IconArmchair, IconBuildingStore, IconCash, IconCircleCheck } from '@tabler/icons-react';
 // </custom:intent-imports>
 
 export interface IntentLink {
@@ -42,6 +43,12 @@ export interface IntentLink {
 
 export const INTENTS: IntentLink[] = [
   // <custom:intents>
+  { path: '/intents/gast-einladen', label: { de: 'Gast einladen', en: 'Invite guest' }, icon: IconMailPlus, description: 'Einen Gast mit Kontaktdaten erfassen und die Einladung als versendet markieren.' },
+  { path: '/intents/rueckmeldung-erfassen', label: { de: 'Rückmeldung erfassen', en: 'Record RSVP' }, icon: IconMessageCheck, description: 'Zu- oder Absage eines eingeladenen Gastes eintragen.' },
+  { path: '/intents/gast-an-tisch-setzen', label: { de: 'Gast an Tisch setzen', en: 'Seat guest at table' }, icon: IconArmchair, description: 'Einen zugesagten Gast einem Tisch zuweisen, sofern noch Plätze frei sind.' },
+  { path: '/intents/dienstleister-buchen', label: { de: 'Dienstleister buchen', en: 'Book vendor' }, icon: IconBuildingStore, description: 'Dienstleister auswählen, als gebucht markieren und Budgetposten sowie Aufgabe dazu anlegen.' },
+  { path: '/intents/zahlung-erfassen', label: { de: 'Zahlung erfassen', en: 'Record payment' }, icon: IconCash, description: 'Eine Zahlung zu einem Budgetposten mit tatsächlichem Betrag und Status eintragen.' },
+  { path: '/intents/aufgabe-abschliessen', label: { de: 'Aufgabe abschließen', en: 'Complete task' }, icon: IconCircleCheck, description: 'Offene Aufgabe als erledigt markieren.' },
   // </custom:intents>
 ];
 
@@ -52,7 +59,7 @@ export const INTENTS: IntentLink[] = [
  * purpose — a scaffold update resets it to false (self-healing if Phase 2
  * never ran).
  */
-export const INTENTS_PENDING = true;
+export const INTENTS_PENDING = false;
 
 /**
  * When the Phase-1 bundle was deployed (ISO, set by the service together with
